@@ -1,4 +1,16 @@
 # NgObject2Form
+This is my first aangular/npm library so I'm sorry for any mistakes and I'll gladly accept constructive criticism.
+
+As stated above, this service has functions that make creating forms easier. The general idea is that you create a class init your object and you don't have to update your formGroup everytime you make a change to the object.
+In my case, instead of interfaces I use classes with contructors which simplify my workflow even further.
+
+Functions:
+genFormFromClass(object): Takes an object and returns a FormGroup with controlers, formArrays and formGroups based o the object content.
+
+getFormData(FormGroup): Takes a FormGroup and returns an object with the content (controlers, formArrays and formGroups) of the passed FormGroup.
+
+OBS: I plan on adding an object for validation control and maybe a template generator very soon.
+
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.0-rc.7.
 
