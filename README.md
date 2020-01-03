@@ -7,6 +7,57 @@ The general idea is that you **pass an object and it auto generates a formGroup 
 
 In my case, instead of interfaces I use classes with contructors which simplify my workflow even further.
 
+# Usage:
+
+```Typescript
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { NgObject2FormService } from 'NgObject2Form';
+
+class Supplier {
+    name: string;
+    mail: string;
+    phoneList: number[];
+
+    constructor() {
+        this.name = '';
+        this.mail = '';
+        this.phoneList = []
+    }
+}
+
+@Component({
+  selector: 'app-add-supplier',
+  templateUrl: './add-supplier.component.html',
+  styleUrls: ['./add-supplier.component.scss']
+})
+export class AddSupplierComponent implements OnInit {
+  currentSupplier: Supplier = new Supplier();
+
+  supplierForm: FormGroup<Supplier>;
+
+  constructor(
+    private genFormService: NgObject2FormService,
+  ) { }
+
+  ngOnInit() {
+    this.supplierForm = this.initSupplier();
+  }
+
+  initSupplier() {
+    const newSupForm = this.genFormService.genFormFromClass(this.currentSupplier);
+    return newSupForm;
+  }
+
+  addSupplier(supplier: FormGroup) {
+    this.currentSupplier = this.genFormService.getFormData(supplier) as Supplier;
+
+    console.log('current supplier -->', this.currentSupplier);
+  }
+
+}
+```
+
 **#Functions:**
 **genFormFromClass(object)**: Takes an object and returns a FormGroup with controlers, formArrays and formGroups based o the object content.
 
