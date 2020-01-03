@@ -9,6 +9,7 @@ In my case, instead of interfaces I use classes with contructors which simplify 
 
 # Usage:
 
+### Generate Form
 Import and inject the service to the component that uses it:
 
 ```Typescript
@@ -29,7 +30,9 @@ export class AddSupplierComponent {
     private genFormService: NgObject2FormService,
   ) { }
   
-  
+  submitForm() {
+    ... your submition code
+  }
 
 }
     
@@ -38,7 +41,7 @@ export class AddSupplierComponent {
 The ```supplierForm``` from the code above will be a FormGroup with ```name``` as a controller and ```phoneList``` as a child FormGroup that has ```phone1``` and ```phone2``` as controllers. Than you just use the it in your template as you would with any reactive Form:
 
 ```HTML
-<form [formGroup]="supplierForm" (ngSubmit)="addSupplier(supplierForm)">
+<form [formGroup]="supplierForm" (ngSubmit)="submitForm()">
     <input type="text" formControlName="name">
 
     <div formGroupName="phoneList">
@@ -48,9 +51,22 @@ The ```supplierForm``` from the code above will be a FormGroup with ```name``` a
         <label for="phone1">phone 2:</label>
         <input type="text" formControlName="phone1">
     </div>
+    
+    <button type="submit">Submit</button>
 </form>
 ```
 
+### Get Form data:
+
+To simplify retrieving the form data there is also a function ```getFormData(FormGroup)``` that takes a FormGroup and returns the submited data as an object:
+
+```Typescript
+submitForm() {
+    this.supplier = this.genFormService.getFormData(supplierForm);
+}
+```
+
+## Simple example: 
 
 ```Typescript
 import { Component, OnInit } from '@angular/core';
@@ -94,21 +110,14 @@ export class AddSupplierComponent implements OnInit {
 
   addSupplier(supplier: FormGroup) {
     this.currentSupplier = this.genFormService.getFormData(supplier) as Supplier;
-
-    console.log('current supplier -->', this.currentSupplier);
   }
 
 }
 ```
 
-**#Functions:**
-**genFormFromClass(object)**: Takes an object and returns a FormGroup with controlers, formArrays and formGroups based o the object content.
-
-**getFormData(FormGroup)**: Takes a FormGroup and returns an object with the content (controlers, formArrays and formGroups) of the passed FormGroup.
-
 **OBS**: I plan on adding an object for validation control and maybe a template generator very soon.
 
-This is my first aangular/npm library so I'm sorry for any mistakes and I'll gladly accept constructive criticism.
+Als This is my first aangular/npm library so I'm sorry for any mistakes and I'll gladly accept constructive criticism.
 
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.0-rc.7.
