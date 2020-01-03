@@ -9,6 +9,49 @@ In my case, instead of interfaces I use classes with contructors which simplify 
 
 # Usage:
 
+Import and inject the service to the component that uses it:
+
+```Typescript
+import { NgObject2FormService } from 'NgObject2Form';
+    ...
+export class AddSupplierComponent {
+  supplier = {
+    name: '',
+    phoneList: {
+        phone1: '',
+        phone2: ''
+    }
+  };
+
+  supplierForm: FormGroup = this.genFormService.genFormFromClass(this.supplier);
+
+  constructor(
+    private genFormService: NgObject2FormService,
+  ) { }
+  
+  
+
+}
+    
+```
+
+The ```supplierForm``` from the code above will be a FormGroup with ```name``` as a controller and ```phoneList``` as a child FormGroup that has ```phone1``` and ```phone2``` as controllers. Than you just use the it in your template as you would with any reactive Form:
+
+```HTML
+<form [formGroup]="supplierForm" (ngSubmit)="addSupplier(supplierForm)">
+    <input type="text" formControlName="name">
+
+    <div formGroupName="phoneList">
+        <label for="phone1">phone1:</label>
+        <input type="text" formControlName="phone1" required>
+
+        <label for="phone1">phone 2:</label>
+        <input type="text" formControlName="phone1">
+    </div>
+</form>
+```
+
+
 ```Typescript
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
